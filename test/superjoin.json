@@ -1,0 +1,8 @@
+{
+    "name": "bundle2",
+    "main": "./fixtures/module1.js",
+    "files": [
+        "./fixtures/module2.js",
+        "./fixtures/module3.js"
+    ]
+}

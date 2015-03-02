@@ -1,6 +1,6 @@
 /*
  * grunt-superjoin
- * https://github.com/andi/grunt-superjoin
+ * https://github.com/andi-oxidant/grunt-superjoin
  *
  * Copyright (c) 2015 Andi Heinkelein
  * Licensed under the MIT license.
@@ -30,21 +30,20 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     superjoin: {
-      default_options: {
+      bundle1: {
         options: {
+          root: 'test/',
+          main: './fixtures/module1.js',
+          banner: '/*!\n * My Superbundle\n */'
         },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123']
-        }
+        src: ['./fixtures/module1.js', './fixtures/module2.js'],
+        dest: 'tmp/bundle1.js'
       },
-      custom_options: {
+      bundle2: {
         options: {
-          separator: ': ',
-          punctuation: ' !!!'
+          root: 'test/'
         },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123']
-        }
+        dest: 'tmp/bundle2.js'
       }
     },
 

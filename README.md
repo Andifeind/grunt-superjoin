@@ -1,6 +1,6 @@
 # grunt-superjoin
 
-> Grunt task for superjoin the web module loader
+> Grunt plugin for superjoin the module loader for the web
 
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
@@ -37,53 +37,96 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.dev
 Type: `String`
-Default value: `',  '`
+Default value: `false`
 
-A string value that is used to do something with whatever.
+Enables develop mode. Superjoin loads local modules automatically by using XHR if it isn't within the bundle. Use this flag in develop mode only.
 
-#### options.punctuation
+#### option.root
 Type: `String`
-Default value: `'.'`
+Default value: Same folder where the Gruntfile.js file is. 
 
-A string value that is used to do something else with whatever else.
+Changes the default web root folder. For example if you store all public files under public, then set this flag to `public/`
+
+#### option.banner
+Type: `String`
+Default value: ''
+
+Adds a banner at the beginning of the bundle.
+
+Example:
+```js
+grunt.initConfig({
+  pkg: grunt.readJSON('package.json'),
+  superjoin: {
+    dist: {
+      options: {
+        banner: '/*!\n * My Superbundle v<%= pkg.version %>\n */'
+      }
+    }
+  }
+});
+```
+
+Produces:
+
+```js
+/*!
+ * My Superbundle v0.1.0
+ */
+
+ <bundle code goes here ...>
+```
+
+
+### Params
+
+#### src
+Type: `Array|String`
+
+Configures all required modules. If this property is not present, then Superjoin tries to read the files configuration from a superjoin.json or package.json file
+
+#### dest
+Type: `String`
+Default: `<%= pkg.name %>.js`
+
+Defines the filename for the output file
 
 ### Usage Examples
 
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+This example loads `jquery` from node_modules folder and and `module1.js` and `module2.js` from public/src/ folder
+The project root is set per default to the folder where your Gruntfile.js file is. To change the public root folder, set the `root` option.
+Superjoin creates a bundle of all these modules and writes it to `build/mybundle.js`
+
+Local modules must start with `./` otherwise superjoin looks in node_modules folder for that module.
+
 
 ```js
 grunt.initConfig({
   superjoin: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
+    dist: {
+      options: {
+        root: 'public/'
+      },
+      src: ['jquery', './src/module1.js', './src/module2.js'],
+      dest: 'build/mybundle.js'
+    }
+  }
 });
 ```
 
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
+### superjoin.json
 
-```js
-grunt.initConfig({
-  superjoin: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
+Superjoin looks for a superjoin.json file in your project dir. If no file was found it looks into the package.json file for a superjoin property. You can use one of this methods to define your module paths. 
+
+Superjoin looks for a file in this order
+
+```
+<project root>/<web root>/superjoin.json
+<project root>/superjoin.json
+<project root>/package.json (using the superjoin property)
 ```
 
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+A Gruntfile configuration overrides a Superjoin config property. For example, if a Superjoin `files` option was found and the `src` property in the Gruntfile was set, then the Gruntfile property will be used.
 
-## Release History
-_(Nothing yet)_

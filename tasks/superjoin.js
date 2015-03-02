@@ -1,6 +1,6 @@
 /*
  * grunt-superjoin
- * https://github.com/andi/grunt-superjoin
+ * https://github.com/andi-oxidant/grunt-superjoin
  *
  * Copyright (c) 2015 Andi Heinkelein
  * Licensed under the MIT license.
@@ -10,41 +10,53 @@
 
 module.exports = function(grunt) {
 
-  // Please see the Grunt documentation for more information regarding task
-  // creation: http://gruntjs.com/creating-tasks
+    var path = require('path');
 
-  grunt.registerMultiTask('superjoin', 'Grunt task for superjoin the web module loader', function() {
-    // Merge task-specific and/or target-specific options with these defaults.
-    var options = this.options({
-      punctuation: '.',
-      separator: ', '
+    var Superjoin = require('superjoin');
+
+    // Please see the Grunt documentation for more information regarding task
+    // creation: http://gruntjs.com/creating-tasks
+
+    grunt.registerMultiTask('superjoin', 'Grunt plugin for superjoin the module loader for the web', function() {
+        // Merge task-specific and/or target-specific options with these defaults.
+        var options = this.options({
+            root: process.cwd(),
+            dev: false
+        });
+
+        // Iterate over all specified file groups.
+        this.files.forEach(function(f) {
+            var files;
+
+            var superjoin = new Superjoin();
+            superjoin.root = path.resolve(process.cwd(), options.root);
+            var conf = superjoin.getConf();
+
+            if (f.orig.src) {
+                files = f.orig.src.map(function(filepath) {
+                    return filepath;
+                });
+            }
+            else {
+                files = conf.files;
+            }
+
+            grunt.log.ok('Setting root dir:', superjoin.root);
+            if (options.dev) {
+                grunt.log.ok('Enabling developer mode!');
+                superjoin.autoload = true;
+            }
+
+            superjoin.verbose = true;
+
+            var main = options.main || conf.main;
+
+            //Add banner
+            superjoin.banner = options.banner;
+
+            var out = superjoin.join(files, main);
+            grunt.file.write(f.dest, out);
+        });
     });
-
-    // Iterate over all specified file groups.
-    this.files.forEach(function(f) {
-      // Concat specified files.
-      var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
-        }
-      }).map(function(filepath) {
-        // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
-
-      // Handle options.
-      src += options.punctuation;
-
-      // Write the destination file.
-      grunt.file.write(f.dest, src);
-
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
-    });
-  });
 
 };
