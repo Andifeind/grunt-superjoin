@@ -18,7 +18,6 @@ module.exports = function(grunt) {
     // creation: http://gruntjs.com/creating-tasks
 
     grunt.registerMultiTask('superjoin', 'Grunt plugin for superjoin the module loader for the web', function() {
-        // Merge task-specific and/or target-specific options with these defaults.
         var options = this.options({
             root: process.cwd(),
             dev: false
@@ -28,8 +27,12 @@ module.exports = function(grunt) {
         this.files.forEach(function(f) {
             var files;
 
-            var superjoin = new Superjoin();
-            superjoin.root = path.resolve(process.cwd(), options.root);
+            var superjoin = new Superjoin(options);
+            
+            if (options.superjoinFile) {
+                superjoin.confFiles = [options.superjoinFile];
+            }
+
             var conf = superjoin.getConf();
 
             if (f.orig.src) {
