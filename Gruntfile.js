@@ -46,11 +46,18 @@ module.exports = function(grunt) {
         dest: 'tmp/bundle2.js'
       }
     },
-
-    // Unit tests.
     nodeunit: {
       tests: ['test/*_test.js']
-    }
+    },
+    release: {
+        options: {
+            npm: true,
+            indentation: '    ',
+            tagName: ' v<%= version %>', //default: '<%= version %>' 
+            commitMessage: 'release v<%= version %>', //default: 'release <%= version %>' 
+            tagMessage: 'release v<%= version %>' //default: 'Version <%= version %>', 
+        }
+    },
 
   });
 
@@ -61,6 +68,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-release');
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
