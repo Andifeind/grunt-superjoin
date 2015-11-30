@@ -20,7 +20,8 @@ module.exports = function(grunt) {
     grunt.registerMultiTask('superjoin', 'Grunt plugin for superjoin the module loader for the web', function() {
         var options = this.options({
             root: process.cwd(),
-            dev: false
+            dev: false,
+            umd: false
         });
 
         // Iterate over all specified file groups.
