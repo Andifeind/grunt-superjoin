@@ -43,6 +43,8 @@
     "gruntplugin",
     "require",
     "module",
-    "loader"
+    "loader",
+    "superjoin",
+    "commonjs"
   ]
 }
