@@ -1,7 +1,7 @@
 {
   "name": "grunt-superjoin",
   "description": "Grunt plugin for superjoin the module loader for the web",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "homepage": "https://github.com/andi-oxidant/grunt-superjoin",
   "main": "./tasks/superjoin.js",
   "author": {
