@@ -1,6 +1,6 @@
 # grunt-superjoin
 
-> Grunt plugin for superjoin the module loader for the web
+Grunt plugin for superjoin the module loader for the web
 
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
@@ -97,7 +97,7 @@ Defines the filename for the output file
 
 This example loads `jquery` from node_modules folder and and `module1.js` and `module2.js` from public/src/ folder
 The project root is set per default to the folder where your Gruntfile.js file is. To change the public root folder, set the `root` option.
-Superjoin creates a bundle of all these modules and writes it to `build/mybundle.js`
+Superjoin creates a bundle of all these modules and writes it to `public/mybundle.js`
 
 Local modules must start with `./` otherwise superjoin looks in node_modules folder for that module.
 
@@ -110,7 +110,7 @@ grunt.initConfig({
         root: 'public/'
       },
       src: ['jquery', './src/module1.js', './src/module2.js'],
-      dest: 'build/mybundle.js'
+      dest: 'mybundle.js'
     }
   }
 });
@@ -119,6 +119,8 @@ grunt.initConfig({
 ### superjoin.json
 
 Superjoin looks for a superjoin.json file in your project dir. If no file was found it looks into the package.json file for a superjoin property. You can use one of this methods to define your module paths. 
+
+More about [superjoin.json](https://superjoinjs.com/docs.html)
 
 Superjoin looks for a file in this order
 
@@ -129,4 +131,3 @@ Superjoin looks for a file in this order
 ```
 
 A Gruntfile configuration overrides a Superjoin config property. For example, if a Superjoin `files` option was found and the `src` property in the Gruntfile was set, then the Gruntfile property will be used.
-
