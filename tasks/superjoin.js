@@ -1,6 +1,6 @@
 /*
  * grunt-superjoin
- * https://github.com/andi-oxidant/grunt-superjoin
+ * https://github.com/Andifeind/grunt-superjoin
  *
  * Copyright (c) 2015 Andi Heinkelein
  * Licensed under the MIT license.
@@ -14,52 +14,27 @@ module.exports = function(grunt) {
 
     var Superjoin = require('superjoin');
 
-    // Please see the Grunt documentation for more information regarding task
-    // creation: http://gruntjs.com/creating-tasks
-
-    grunt.registerMultiTask('superjoin', 'Grunt plugin for superjoin the module loader for the web', function() {
-        var options = this.options({
-            root: process.cwd(),
-            dev: false
-        });
+    grunt.registerMultiTask('superjoin', 'Grunt plugin for superjoin the module loader for the web', function(done) {
+        var options = this.options();
 
         // Iterate over all specified file groups.
         this.files.forEach(function(f) {
-            var files;
-
-            var superjoin = new Superjoin(options);
-            
-            if (options.superjoinFile) {
-                superjoin.confFiles = [options.superjoinFile];
-            }
-
-            var conf = superjoin.getConf();
-
             if (f.orig.src) {
-                files = f.orig.src.map(function(filepath) {
+                options.files = f.orig.src.map(function(filepath) {
                     return filepath;
                 });
             }
-            else {
-                files = conf.files;
+
+            if (f.dest) {
+                options.outfile = f.dest;
             }
-
-            grunt.log.ok('Setting root dir:', superjoin.root);
-            if (options.dev) {
-                grunt.log.ok('Enabling developer mode!');
-                superjoin.autoload = true;
-            }
-
-            superjoin.verbose = true;
-
-            var main = options.main || conf.main;
-
-            //Add banner
-            superjoin.banner = options.banner;
-
-            var out = superjoin.join(files, main);
-            grunt.file.write(f.dest, out);
+            
+            var superjoin = new Superjoin(options);
+            superjoin.build().then(function(data) {
+                done();
+            }).catch(function(err) {
+                done(err);
+            });
         });
     });
-
 };
