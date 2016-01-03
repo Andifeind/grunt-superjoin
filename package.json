@@ -2,7 +2,7 @@
   "name": "grunt-superjoin",
   "description": "Grunt plugin for superjoin the module loader for the web",
   "version": "0.1.0",
-  "homepage": "https://github.com/andi-oxidant/grunt-superjoin",
+  "homepage": "https://github.com/Andifeind/grunt-superjoin",
   "main": "./tasks/superjoin.js",
   "author": {
     "name": "Andi Heinkelein",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/andi-oxidant/grunt-superjoin.git"
+    "url": "git://github.com/Andifeind/grunt-superjoin.git"
   },
   "bugs": {
-    "url": "https://github.com/andi-oxidant/grunt-superjoin/issues"
+    "url": "https://github.com/Andifeind/grunt-superjoin/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/andi-oxidant/grunt-superjoin/blob/master/LICENSE-MIT"
+      "url": "https://github.com/Andifeind/grunt-superjoin/blob/master/LICENSE-MIT"
     }
   ],
   "engines": {
